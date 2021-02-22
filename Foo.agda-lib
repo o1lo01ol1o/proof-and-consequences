@@ -1,0 +1,4 @@
+name: ProofAndConsequences  -- Comment
+include: src
+depend: 
+  standard-library
