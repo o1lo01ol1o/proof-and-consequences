@@ -1,0 +1,105 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="Agda.css">
+</head>
+<pre class="Agda">
+<a id="6" class="Keyword">module</a> <a id="13" href="Hegal.Waiter.ZFC.html" class="Module">Hegal.Waiter.ZFC</a> <a id="30" class="Keyword">where</a> 
+<a id="37" class="Keyword">open</a> <a id="42" class="Keyword">import</a> <a id="49" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="63" class="Symbol">as</a> <a id="66" class="Module">ℕ</a> <a id="68" class="Keyword">using</a> <a id="74" class="Symbol">(</a><a id="75" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="76" class="Symbol">;</a> <a id="78" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a><a id="82" class="Symbol">;</a> <a id="84" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a><a id="87" class="Symbol">;</a> <a id="89" href="Data.Nat.Base.html#960" class="InductiveConstructor">z≤n</a><a id="92" class="Symbol">;</a> <a id="94" href="Data.Nat.Base.html#1002" class="InductiveConstructor">s≤s</a><a id="97" class="Symbol">)</a>
+<a id="99" class="Keyword">open</a> <a id="104" class="Keyword">import</a> <a id="111" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="120" class="Keyword">using</a> <a id="126" class="Symbol">(</a><a id="127" href="Data.Nat.Properties.html#4678" class="Function Operator">_≤?_</a><a id="131" class="Symbol">)</a>
+<a id="133" class="Keyword">open</a> <a id="138" class="Keyword">import</a> <a id="145" href="Data.Empty.html" class="Module">Data.Empty</a> <a id="156" class="Keyword">using</a> <a id="162" class="Symbol">(</a><a id="163" href="Data.Empty.html#526" class="Datatype">⊥</a><a id="164" class="Symbol">)</a>
+<a id="166" class="Keyword">open</a> <a id="171" class="Keyword">import</a> <a id="178" href="Agda.Primitive.html" class="Module">Agda.Primitive</a> <a id="193" class="Keyword">using</a> <a id="199" class="Symbol">(</a><a id="200" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="205" class="Symbol">;</a> <a id="207" href="Agda.Primitive.html#606" class="Primitive">lsuc</a><a id="211" class="Symbol">)</a>
+<a id="213" class="Keyword">open</a> <a id="218" class="Keyword">import</a> <a id="225" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a> <a id="268" class="Keyword">using</a> <a id="274" class="Symbol">(</a><a id="275" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="278" class="Symbol">;</a> <a id="280" href="Relation.Binary.PropositionalEquality.Core.html#840" class="Function Operator">_≢_</a><a id="283" class="Symbol">;</a> <a id="285" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="289" class="Symbol">;</a> <a id="291" href="Relation.Binary.PropositionalEquality.Core.html#1131" class="Function">cong</a><a id="295" class="Symbol">)</a>
+<a id="297" class="Keyword">open</a> <a id="302" class="Keyword">import</a> <a id="309" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="326" class="Keyword">using</a> <a id="332" class="Symbol">(</a><a id="333" href="Relation.Nullary.html#653" class="Function Operator">¬_</a> <a id="336" class="Symbol">;</a> <a id="338" href="Relation.Nullary.html#1508" class="Record">Dec</a><a id="341" class="Symbol">;</a> <a id="343" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a><a id="346" class="Symbol">;</a> <a id="348" href="Relation.Nullary.html#1682" class="InductiveConstructor">no</a><a id="350" class="Symbol">)</a>
+<a id="352" class="Keyword">open</a> <a id="357" class="Keyword">import</a> <a id="364" href="Data.Empty.html" class="Module">Data.Empty</a> <a id="375" class="Keyword">using</a> <a id="381" class="Symbol">(</a><a id="382" href="Data.Empty.html#628" class="Function">⊥-elim</a><a id="388" class="Symbol">)</a>
+<a id="390" class="Keyword">open</a> <a id="395" class="Keyword">import</a> <a id="402" href="Data.List.html" class="Module">Data.List</a>
+
+</pre>
+We’ll go through the motions of the naive, set-theortic model of a waiter
+considering the difference between coffee-without-milk and coffee-without-cream.
+<pre
+  class="Agda"
+><a id="576" class="Keyword">module</a> <a id="ClassicalWaiter"></a><a id="583" href="Hegal.Waiter.ZFC.html#583" class="Module">ClassicalWaiter</a> <a id="599" class="Keyword">where</a>
+
+</pre>
+We’re effectively going to treat “a coffee” as a finite set (of contents).
+However, we’re going to implement the finite set as an inductive list of types.
+<pre class="Agda">
+<a id="771" class="Keyword">data</a> <a id="FinSet"></a><a id="776" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="783" class="Symbol">{</a><a id="784" href="Hegal.Waiter.ZFC.html#784" class="Bound">a</a><a id="785" class="Symbol">}</a> <a id="787" class="Symbol">:</a> <a id="789" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="794" class="Symbol">(</a><a id="795" class="PrimitiveType">Set</a> <a id="799" href="Hegal.Waiter.ZFC.html#784" class="Bound">a</a><a id="800" class="Symbol">)</a> <a id="802" class="Symbol">→</a> <a id="804" class="PrimitiveType">Set</a> <a id="808" class="Symbol">(</a><a id="809" href="Agda.Primitive.html#606" class="Primitive">lsuc</a> <a id="814" href="Hegal.Waiter.ZFC.html#784" class="Bound">a</a><a id="815" class="Symbol">)</a> <a id="817" class="Keyword">where</a>
+  <a id="FinSet.[]"></a><a id="825" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a>  <a id="829" class="Symbol">:</a> <a id="831" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="838" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>
+  <a id="FinSet._∷_"></a><a id="843" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">_∷_</a> <a id="847" class="Symbol">:</a> <a id="849" class="Symbol">{</a><a id="850" href="Hegal.Waiter.ZFC.html#850" class="Bound">firstElement</a> <a id="863" class="Symbol">:</a> <a id="865" class="PrimitiveType">Set</a> <a id="869" href="Hegal.Waiter.ZFC.html#784" class="Bound">a</a><a id="870" class="Symbol">}{</a><a id="872" href="Hegal.Waiter.ZFC.html#872" class="Bound">remainder</a> <a id="882" class="Symbol">:</a> <a id="884" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="889" class="Symbol">(</a><a id="890" class="PrimitiveType">Set</a> <a id="894" href="Hegal.Waiter.ZFC.html#784" class="Bound">a</a><a id="895" class="Symbol">)}</a>
+        <a id="906" class="Symbol">(</a><a id="907" href="Hegal.Waiter.ZFC.html#907" class="Bound">x</a> <a id="909" class="Symbol">:</a> <a id="911" href="Hegal.Waiter.ZFC.html#850" class="Bound">firstElement</a><a id="923" class="Symbol">)</a> <a id="925" class="Symbol">(</a><a id="926" href="Hegal.Waiter.ZFC.html#926" class="Bound">xs</a> <a id="929" class="Symbol">:</a> <a id="931" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="938" href="Hegal.Waiter.ZFC.html#872" class="Bound">remainder</a><a id="947" class="Symbol">)</a> <a id="949" class="Symbol">→</a> <a id="951" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="958" class="Symbol">(</a><a id="959" href="Hegal.Waiter.ZFC.html#850" class="Bound">firstElement</a> <a id="972" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="974" href="Hegal.Waiter.ZFC.html#872" class="Bound">remainder</a><a id="983" class="Symbol">)</a>
+<a id="985" class="Keyword">infixr</a> <a id="992" class="Number">5</a> <a id="994" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">_∷_</a>
+</pre>
+We’ll take “coffee” as a primative type with only one constructor.
+<pre
+  class="Agda"
+><a id="1074" class="Keyword">data</a> <a id="Coffee"></a><a id="1079" href="Hegal.Waiter.ZFC.html#1079" class="Datatype">Coffee</a> <a id="1086" class="Symbol">:</a> <a id="1088" class="PrimitiveType">Set</a> <a id="1092" class="Keyword">where</a>
+  <a id="Coffee.coffee"></a><a id="1100" href="Hegal.Waiter.ZFC.html#1100" class="InductiveConstructor">coffee</a> <a id="1107" class="Symbol">:</a> <a id="1109" href="Hegal.Waiter.ZFC.html#1079" class="Datatype">Coffee</a>
+
+</pre>
+Cream and milk are similarly defined.
+<pre
+  class="Agda"
+><a id="1163" class="Keyword">data</a> <a id="Cream"></a><a id="1168" href="Hegal.Waiter.ZFC.html#1168" class="Datatype">Cream</a> <a id="1174" class="Symbol">:</a> <a id="1176" class="PrimitiveType">Set</a> <a id="1180" class="Keyword">where</a>
+  <a id="Cream.cream"></a><a id="1188" href="Hegal.Waiter.ZFC.html#1188" class="InductiveConstructor">cream</a> <a id="1194" class="Symbol">:</a> <a id="1196" href="Hegal.Waiter.ZFC.html#1168" class="Datatype">Cream</a>
+  
+<a id="1205" class="Keyword">data</a> <a id="Milk"></a><a id="1210" href="Hegal.Waiter.ZFC.html#1210" class="Datatype">Milk</a> <a id="1215" class="Symbol">:</a> <a id="1217" class="PrimitiveType">Set</a> <a id="1221" class="Keyword">where</a>
+  <a id="Milk.milk"></a><a id="1229" href="Hegal.Waiter.ZFC.html#1229" class="InductiveConstructor">milk</a> <a id="1234" class="Symbol">:</a> <a id="1236" href="Hegal.Waiter.ZFC.html#1210" class="Datatype">Milk</a>
+
+</pre>
+Equality (≡) between types is proven when you can provide evidence with the
+<code>refl</code> constructor. type Let’s check to see that we can show coffee
+equivalent to coffee and milk is equivalent milk.
+<pre
+  class="Agda"
+><a id="proof₁"></a><a id="1444" href="Hegal.Waiter.ZFC.html#1444" class="Function">proof₁</a> <a id="1451" class="Symbol">:</a> <a id="1453" href="Hegal.Waiter.ZFC.html#1079" class="Datatype">Coffee</a> <a id="1460" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1462" href="Hegal.Waiter.ZFC.html#1079" class="Datatype">Coffee</a>
+<a id="1469" href="Hegal.Waiter.ZFC.html#1444" class="Function">proof₁</a> <a id="1476" class="Symbol">=</a> <a id="1478" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="proof₂"></a><a id="1484" href="Hegal.Waiter.ZFC.html#1484" class="Function">proof₂</a> <a id="1491" class="Symbol">:</a> <a id="1493" href="Hegal.Waiter.ZFC.html#1210" class="Datatype">Milk</a> <a id="1498" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1500" href="Hegal.Waiter.ZFC.html#1210" class="Datatype">Milk</a>
+<a id="1505" href="Hegal.Waiter.ZFC.html#1484" class="Function">proof₂</a> <a id="1512" class="Symbol">=</a> <a id="1514" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+</pre>
+However, we cannot say that milk is not equal to cream since the relation of
+equality is only possible between terms of the same type.
+<pre class="Agda"><a id="1662" class="Comment">-- impossible : Milk ≢ Cream</a>
+
+</pre>
+We treat the semantics of “with” as a union of finite sets.
+<pre
+  class="Agda"
+><a id="1761" class="Keyword">infixr</a> <a id="1768" class="Number">5</a> <a id="1770" href="Hegal.Waiter.ZFC.html#1779" class="Function Operator">_with&#39;_</a>
+
+<a id="_with&#39;_"></a><a id="1779" href="Hegal.Waiter.ZFC.html#1779" class="Function Operator">_with&#39;_</a> <a id="1787" class="Symbol">:</a> <a id="1789" class="Symbol">∀</a> <a id="1791" class="Symbol">{</a><a id="1792" href="Hegal.Waiter.ZFC.html#1792" class="Bound">l</a> <a id="1794" class="Symbol">:</a> <a id="1796" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="1801" class="Symbol">}</a> <a id="1803" class="Symbol">{</a><a id="1804" href="Hegal.Waiter.ZFC.html#1804" class="Bound">m</a> <a id="1806" href="Hegal.Waiter.ZFC.html#1806" class="Bound">n</a> <a id="1808" class="Symbol">:</a> <a id="1810" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="1815" class="Symbol">(</a><a id="1816" class="PrimitiveType">Set</a> <a id="1820" href="Hegal.Waiter.ZFC.html#1792" class="Bound">l</a><a id="1821" class="Symbol">)}</a> <a id="1824" class="Symbol">→</a>  <a id="1827" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="1834" href="Hegal.Waiter.ZFC.html#1804" class="Bound">m</a> <a id="1836" class="Symbol">→</a>  <a id="1839" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="1846" href="Hegal.Waiter.ZFC.html#1806" class="Bound">n</a> <a id="1848" class="Symbol">→</a> <a id="1850" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="1857" class="Symbol">(</a><a id="1858" href="Hegal.Waiter.ZFC.html#1804" class="Bound">m</a> <a id="1860" href="Data.List.Base.html#1763" class="Function Operator">++</a> <a id="1863" href="Hegal.Waiter.ZFC.html#1806" class="Bound">n</a><a id="1864" class="Symbol">)</a>
+<a id="1866" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a> <a id="1869" href="Hegal.Waiter.ZFC.html#1779" class="Function Operator">with&#39;</a> <a id="1875" href="Hegal.Waiter.ZFC.html#1875" class="Bound">xs</a> <a id="1878" class="Symbol">=</a> <a id="1880" href="Hegal.Waiter.ZFC.html#1875" class="Bound">xs</a>
+<a id="1883" class="Symbol">(</a><a id="1884" href="Hegal.Waiter.ZFC.html#1884" class="Bound">x₁</a> <a id="1887" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="1889" href="Hegal.Waiter.ZFC.html#1889" class="Bound">x₂</a><a id="1891" class="Symbol">)</a> <a id="1893" href="Hegal.Waiter.ZFC.html#1779" class="Function Operator">with&#39;</a> <a id="1899" href="Hegal.Waiter.ZFC.html#1899" class="Bound">x</a> <a id="1901" class="Symbol">=</a> <a id="1903" href="Hegal.Waiter.ZFC.html#1884" class="Bound">x₁</a> <a id="1906" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="1908" class="Symbol">(</a><a id="1909" href="Hegal.Waiter.ZFC.html#1889" class="Bound">x₂</a> <a id="1912" href="Hegal.Waiter.ZFC.html#1779" class="Function Operator">with&#39;</a> <a id="1918" href="Hegal.Waiter.ZFC.html#1899" class="Bound">x</a><a id="1919" class="Symbol">)</a>
+</pre>
+Coffee with milk is just a set of coffee and milk squished together
+<pre
+  class="Agda"
+><a id="CoffeeWithMilk"></a><a id="1997" href="Hegal.Waiter.ZFC.html#1997" class="Function">CoffeeWithMilk</a> <a id="2012" class="Symbol">=</a> <a id="2014" class="Symbol">(</a><a id="2015" href="Hegal.Waiter.ZFC.html#1079" class="Datatype">Coffee</a> <a id="2022" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="2024" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a><a id="2026" class="Symbol">)</a> <a id="2028" href="Hegal.Waiter.ZFC.html#1779" class="Function Operator">with&#39;</a> <a id="2034" class="Symbol">(</a><a id="2035" href="Hegal.Waiter.ZFC.html#1210" class="Datatype">Milk</a> <a id="2040" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="2042" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a><a id="2044" class="Symbol">)</a>
+<a id="CoffeeWithCream"></a><a id="2046" href="Hegal.Waiter.ZFC.html#2046" class="Function">CoffeeWithCream</a> <a id="2062" class="Symbol">=</a> <a id="2064" class="Symbol">(</a><a id="2065" href="Hegal.Waiter.ZFC.html#1079" class="Datatype">Coffee</a> <a id="2072" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="2074" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a><a id="2076" class="Symbol">)</a> <a id="2078" href="Hegal.Waiter.ZFC.html#1779" class="Function Operator">with&#39;</a> <a id="2084" class="Symbol">(</a><a id="2085" href="Hegal.Waiter.ZFC.html#1168" class="Datatype">Cream</a> <a id="2091" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="2093" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a><a id="2095" class="Symbol">)</a>
+
+<a id="proof₃"></a><a id="2098" href="Hegal.Waiter.ZFC.html#2098" class="Function">proof₃</a> <a id="2105" class="Symbol">:</a> <a id="2107" href="Hegal.Waiter.ZFC.html#1997" class="Function">CoffeeWithMilk</a> <a id="2122" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="2124" href="Hegal.Waiter.ZFC.html#1997" class="Function">CoffeeWithMilk</a>
+<a id="2139" href="Hegal.Waiter.ZFC.html#2098" class="Function">proof₃</a> <a id="2146" class="Symbol">=</a> <a id="2148" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+</pre>
+And, as before, we cannot produce a proof of relation between different types,
+so neither equality nor inequality can be proved.
+<pre
+  class="Agda"
+><a id="2290" class="Comment">-- impossilble₂ : CoffeeWithMilk ≡ CoffeeWithCream</a>
+
+
+</pre>
+Will take the semantics of “without” to be a specialization of the constant
+morphism that simply returns the first argument.
+<pre
+  class="Agda"
+><a id="_without_"></a><a id="2476" href="Hegal.Waiter.ZFC.html#2476" class="Function Operator">_without_</a> <a id="2486" class="Symbol">:</a>  <a id="2489" class="Symbol">∀</a> <a id="2491" class="Symbol">{</a><a id="2492" href="Hegal.Waiter.ZFC.html#2492" class="Bound">l</a> <a id="2494" class="Symbol">:</a> <a id="2496" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="2501" class="Symbol">}</a> <a id="2503" class="Symbol">{</a><a id="2504" href="Hegal.Waiter.ZFC.html#2504" class="Bound">m</a> <a id="2506" href="Hegal.Waiter.ZFC.html#2506" class="Bound">n</a> <a id="2508" class="Symbol">:</a> <a id="2510" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="2515" class="Symbol">(</a><a id="2516" class="PrimitiveType">Set</a> <a id="2520" href="Hegal.Waiter.ZFC.html#2492" class="Bound">l</a><a id="2521" class="Symbol">)}</a> <a id="2524" class="Symbol">→</a>  <a id="2527" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="2534" href="Hegal.Waiter.ZFC.html#2504" class="Bound">m</a> <a id="2536" class="Symbol">→</a>  <a id="2539" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="2546" href="Hegal.Waiter.ZFC.html#2506" class="Bound">n</a> <a id="2548" class="Symbol">→</a> <a id="2550" href="Hegal.Waiter.ZFC.html#776" class="Datatype">FinSet</a> <a id="2557" href="Hegal.Waiter.ZFC.html#2504" class="Bound">m</a>
+<a id="2559" href="Hegal.Waiter.ZFC.html#2559" class="Bound">a</a> <a id="2561" href="Hegal.Waiter.ZFC.html#2476" class="Function Operator">without</a> <a id="2569" href="Hegal.Waiter.ZFC.html#2569" class="Bound">b</a> <a id="2571" class="Symbol">=</a> <a id="2573" href="Hegal.Waiter.ZFC.html#2559" class="Bound">a</a>
+</pre>
+And now we all the machinery to show that coffee-without-milk is equal to
+coffee-without-cream:
+<pre class="Agda">
+<a id="proof₄"></a><a id="2681" href="Hegal.Waiter.ZFC.html#2681" class="Function">proof₄</a> <a id="2688" class="Symbol">:</a> <a id="2690" class="Symbol">((</a><a id="2692" href="Hegal.Waiter.ZFC.html#1079" class="Datatype">Coffee</a> <a id="2699" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="2701" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a><a id="2703" class="Symbol">)</a> <a id="2705" href="Hegal.Waiter.ZFC.html#2476" class="Function Operator">without</a> <a id="2713" class="Symbol">(</a><a id="2714" href="Hegal.Waiter.ZFC.html#1168" class="Datatype">Cream</a> <a id="2720" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="2722" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a><a id="2724" class="Symbol">))</a> <a id="2727" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="2729" class="Symbol">((</a><a id="2731" href="Hegal.Waiter.ZFC.html#1079" class="Datatype">Coffee</a> <a id="2738" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="2740" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a><a id="2742" class="Symbol">)</a> <a id="2744" href="Hegal.Waiter.ZFC.html#2476" class="Function Operator">without</a> <a id="2752" class="Symbol">(</a><a id="2753" href="Hegal.Waiter.ZFC.html#1210" class="Datatype">Milk</a> <a id="2758" href="Hegal.Waiter.ZFC.html#843" class="InductiveConstructor Operator">∷</a> <a id="2760" href="Hegal.Waiter.ZFC.html#825" class="InductiveConstructor">[]</a><a id="2762" class="Symbol">))</a>
+<a id="2765" href="Hegal.Waiter.ZFC.html#2681" class="Function">proof₄</a> <a id="2772" class="Symbol">=</a> <a id="2774" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+
+</pre>
