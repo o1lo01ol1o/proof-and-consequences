@@ -22,8 +22,8 @@ url: "https://o1lo01ol1o.github.io" # the base hostname & protocol for your site
 github_username:  o1lo01ol1o
 
 # Build settings
-# plugins:
-#   - jekyll-feed
+plugins:
+  - jekyll-feed
 
 markdown: kramdown
 highlighter: rouge
