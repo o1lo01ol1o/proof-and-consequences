@@ -15,15 +15,15 @@
 # in the templates via {{ site.myvariable }}.
 title: Proof and Consequences
 email: tim.pierson@gmail.com
-description: >- # this means to ignore newlines until "baseurl:"
-  An ongoing project surrouding some formalizations in Agda of Slavoj Žižek's Hegalian waiter.
+# description: >- # this means to ignore newlines until "baseurl:"
+#   An ongoing project surrouding some formalizations in Agda of Slavoj Žižek's Hegalian waiter.
 baseurl: "/proof-and-consequences" # the subpath of your site, e.g. /blog
 url: "https://o1lo01ol1o.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  o1lo01ol1o
 
 # Build settings
-plugins:
-  - jekyll-feed
+# plugins:
+#   - jekyll-feed
 
 markdown: kramdown
 highlighter: rouge
@@ -31,8 +31,8 @@ highlighter: rouge
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
-exclude:
-- src/
+# exclude:
+# - src/
 #   - Gemfile
 #   - Gemfile.lock
 #   - node_modules
