@@ -1,4 +1,0 @@
-name: ProofAndConsequences  -- Comment
-include: _agda
-depend: 
-  standard-library
