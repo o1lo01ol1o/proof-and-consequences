@@ -17,6 +17,10 @@ ENV PATH=/root/.local/bin:$PATH
 COPY --from=agda  /agda/.stack-work/install /agda/.stack-work/install
 COPY --from=agda /root/.local/bin/agda /root/.local/bin/agda
 
+ADD ../agda-stdlib.tar.gz /root/agda-stdlib-1.6
+RUN mkdir -p /root/.agda/
+RUN echo "/root/agda-stdlib-1.6/agda-stdlib/standard-library.agda-lib" > /root/.agda/libraries
+
 # Extend the Jekyll setup
 
 RUN gem install bundler

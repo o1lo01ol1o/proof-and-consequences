@@ -13,13 +13,13 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Agda on Github Pages
-email: github-pages-agda@ednutting.com
+title: Proof and Consequences
+email: tim.pierson@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  A demonstration of Literate Agda Markdown integrated with Github Pages.
-baseurl: "/github-pages-agda" # the subpath of your site, e.g. /blog
-url: "https://ednutting.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-github_username:  ednutting
+  An ongoing project surrouding some formalizations in Agda of Slavoj Žižek's Hegalian waiter.
+baseurl: "/proof-and-consequences" # the subpath of your site, e.g. /blog
+url: "https://o1lo01ol1o.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+github_username:  o1lo01ol1o
 
 # Build settings
 plugins:
@@ -31,7 +31,8 @@ highlighter: rouge
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
-# exclude:
+exclude:
+- src/
 #   - Gemfile
 #   - Gemfile.lock
 #   - node_modules
