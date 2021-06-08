@@ -43,7 +43,7 @@ data Milk : Set where
   milk : Milk
 ```
 
-Equality (≡) between types is proven when you can provide evidence with the `refl` constructor. Since our types are constructed with a single constructor proving self-equality is trivial:
+Equality (≡) between terms is proven when you can provide evidence with the `refl` constructor. Since our types are constructed with a single constructor proving self-equality is trivial:
 ```agda
 proof₁ : Coffee ≡ Coffee
 proof₁ = refl
