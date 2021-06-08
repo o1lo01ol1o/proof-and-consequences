@@ -3,6 +3,12 @@ layout: default
 ---
 
 # The Uninteresting Waiter
+
+We'll go through the motions of the naive, quasi set-theortic model of a (non-Hegalian) waiter considering the difference between coffee-without-milk and coffee-without-cream. 
+
+This waiter duly considers "coffee" to be the stuff in a mug.  It is the same coffee if it is the same stuff, regardless of the negations used to indicate the stuff.
+
+First, some imports so we can make a list of things and talk about equality.
 ```agda
 
 module Hegal.Waiter.ZFC where 
@@ -10,12 +16,6 @@ open import Agda.Primitive using (Level; lsuc)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl)
 open import Data.List
 
-```
-We'll go through the motions of the naive, quasi set-theortic model of a (non-Hegalian) waiter considering the difference between coffee-without-milk and coffee-without-cream. 
-
-This waiter duly considers "coffee" to be the stuff in a mug.  It is the same coffee if it is the same stuff, regardless of the negations used to indicate the stuff.
-```agda
-module Uninteresting where
 ```
 
 We're effectively going to treat "a coffee" as a finite set (of "stuff in a mug").  However, we're going to implement the finite set as an inductive list of types so that all stuff is not the same type.
@@ -65,7 +65,9 @@ _with'_ : ∀ {l : Level} {m n : List (Set l)} →  FinSet m →  FinSet n → F
 [] with' xs = xs
 (x₁ ∷ x₂) with' x = x₁ ∷ (x₂ with' x)
 ```
-Coffee with milk is just a set of coffee and milk squished together
+Coffee with milk is just a set of coffee and milk squished together. 
+
+However, since we've defined this "squishing" on  `FinSet`s, we need to put each individual component in a `FinSet` with `_ :: []` first.
 
 ```agda
 CoffeeWithMilk = (Coffee ∷ []) with' (Milk ∷ [])
@@ -88,11 +90,7 @@ a without b = a
 And now we have all the machinery to show that coffee-without-milk is equal to coffee-without-cream:
 ```agda
 
-Coffee' = Coffee ∷ []
-Cream' = Cream ∷ []
-Milk' = Milk ∷ []
-
-proof₄ : (Coffee' without Cream') ≡ (Coffee' without Milk')
+proof₄ : ((Coffee ∷ []) without (Cream ∷ [])) ≡ ((Coffee ∷ []) without (Milk ∷ []))
 proof₄ = refl
 
 ```
