@@ -9,7 +9,7 @@ layout: post
 
 This is an ongoing project surrouding some formalizations in Agda of Slavoj Žižek's Hegalian waiter:
 
-> Let me repeat the famous joke from Ernst Lubitsch’s Ninotchka:\
+> Let me repeat the famous joke from Ernst Lubitsch’s Ninotchka:
 >
 > ‘Waiter! A cup of coffee without cream, please!’
 >
