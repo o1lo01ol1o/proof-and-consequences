@@ -1,3 +1,9 @@
+
+# Proof and Consequences
+
+Scaffolding adapted from: https://github.com/EdNutting/github-pages-agda
+
+# Participating
 ## Getting started
 You should be able to follow the [plfa getting started section for Emacs](https://plfa.github.io/GettingStarted/) and then
 
