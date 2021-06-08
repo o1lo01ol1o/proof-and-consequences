@@ -31,10 +31,13 @@ highlighter: rouge
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
-# exclude:
-# - src/
-#   - Gemfile
-#   - Gemfile.lock
+exclude:
+  - agda_requirements.txt
+  - agda-stdlib.tar.gz
+  - Foo.agda-lib
+  - setEnvVars.sh
+  - Gemfile
+  - Gemfile.lock
 #   - node_modules
 #   - vendor/bundle/
 #   - vendor/cache/
