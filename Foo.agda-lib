@@ -1,4 +1,4 @@
 name: ProofAndConsequences  -- Comment
-include: src
+include: _agda
 depend: 
   standard-library
