@@ -11,7 +11,7 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl
 open import Data.List
 
 ```
-We'll go through the motions of the naive, quasi set-theortic model of a waiter considering the difference between coffee-without-milk and coffee-without-cream.
+We'll go through the motions of the naive, quasi set-theortic model of a (non-Hegalian) waiter considering the difference between coffee-without-milk and coffee-without-cream. This waiter duly considers "coffee" to be the stuff in a mug.  It is the same coffee if it is the same stuff, regardless of the negations used to indicate the stuff.
 ```agda
 module Uninteresting where
 
