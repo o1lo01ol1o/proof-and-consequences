@@ -17,7 +17,7 @@ This is an ongoing project surrouding some formalizations in Agda of Slavoj ≈Ωi≈
 
 ## Part One
 
-The boring waiter [as a compiled, literate Agda file.]({{ "/agda/Hegal.Waiter.ZFC" | relative_url }}).
+The boring waiter [as a compiled, literate Agda file]({{ "/agda/Hegal.Waiter.ZFC" | relative_url }}).
 
 ## Part Two
 
